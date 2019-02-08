@@ -1,0 +1,1 @@
+# extension-single-checkbox-parameters
