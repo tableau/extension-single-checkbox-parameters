@@ -1,0 +1,32 @@
+{
+  "name": "extension-single-checkbox-parameter",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@tableau/tableau-ui": "^2.1.0",
+    "@types/react-router-dom": "^4.3.1",
+    "gh-pages": "^2.0.1",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts-ts": "3.1.0",
+    "reactstrap": "^7.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.13",
+    "@types/node": "^10.12.18",
+    "@types/react": "^16.7.20",
+    "@types/react-dom": "^16.0.11",
+    "@types/reactstrap": "^7.1.0",
+    "typescript": "^3.2.4"
+  },
+  "homepage": "https://tableau.github.io/tableau-single-checkbox-parameters"
+}
