@@ -1,6 +1,6 @@
 {
   "name": "extension-single-checkbox-parameter",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@tableau/tableau-ui": "2.1.0",
@@ -25,5 +25,5 @@
     "@types/reactstrap": "^7.1.0",
     "typescript": "^3.2.4"
   },
-  "homepage": "https://tableau.github.io/tableau-single-checkbox-parameters"
+  "homepage": "https://tableau.github.io/extension-single-checkbox-parameters"
 }

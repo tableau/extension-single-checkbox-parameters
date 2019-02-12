@@ -72,7 +72,7 @@ class BooleanFilter extends React.Component {
 
     // Pops open the configure page if extension isn't configured
     public configure = (): void => {
-        const popupUrl = (window.location.origin.includes('localhost')) ? `${window.location.origin}/#/config` : `${window.location.origin}/tableau-single-checkbox-parameters/#/config`;
+        const popupUrl = (window.location.origin.includes('localhost')) ? `${window.location.origin}/#/config` : `${window.location.origin}/extension-single-checkbox-parameters/#/config`;
         const payload = '';
         window.tableau.extensions.ui.displayDialogAsync(popupUrl, payload, { height: 650, width: 450 }).then((closePayload: string) => {
             console.log(`returning from Configure! ${closePayload}`)
