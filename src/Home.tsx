@@ -8,7 +8,7 @@ class Home extends React.Component<any, any> {
 				<div className='icontainer'>
 					<div className='box'>
 						<div className='left'>
-							<div><img src='./TableauCheckbox.png' /></div>
+							<div><img src='TableauCheckbox.png' /></div>
 							<h1 className='iheader'>Single Checkbox Parameters</h1>
 							<span className='tagline'>One checkbox. Two values.</span>
 						</div>
