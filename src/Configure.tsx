@@ -90,6 +90,11 @@ class Configure extends React.Component<any, State> {
                     dropdownList.push(p.name);
                 }
             }
+            // case insensitive sort
+            dropdownList.sort((a, b) => 
+                (a.localeCompare(b, 'en', {'sensitivity': 'base'}))
+            )
+            
             if (dropdownList.length > 0) {
                 this.setState({
                     param_enabled: true,

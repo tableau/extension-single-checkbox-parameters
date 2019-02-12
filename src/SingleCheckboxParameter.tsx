@@ -72,6 +72,15 @@ class BooleanFilter extends React.Component {
 
     // Pops open the configure page if extension isn't configured
     public configure = (): void => {
+        // unregister event handler
+        try {
+            unregisterHandler();
+            console.log('Unregistering Event Handler');
+        }
+        catch (err) {
+            console.log('Ignore error handler as it is not set yet.');
+        }
+
         const popupUrl = (window.location.origin.includes('localhost')) ? `${window.location.origin}/#/config` : `${window.location.origin}/extension-single-checkbox-parameters/#/config`;
         const payload = '';
         window.tableau.extensions.ui.displayDialogAsync(popupUrl, payload, { height: 650, width: 450 }).then((closePayload: string) => {
@@ -139,14 +148,16 @@ class BooleanFilter extends React.Component {
         }
 
         const settings = window.tableau.extensions.settings.getAll();
-        dashboard.findParameterAsync(settings.parameter).then((param: any) => {
+        dashboard.findParameterAsync(settings.parameter)
+        .then((param: any) => {
 
             const indexFalse = settings.which_label==='0'?1:0
             const indexTrue = settings.which_label==='0'?0:1
-
+            const currLabel = param.allowableValues.allowableValues[indexTrue].formattedValue
             this.setState((prevState) => ({
                 bg: (settings.bg ? fakeWhiteOverlay(settings.bg) : '#ffffff'),
-                label: param.allowableValues.allowableValues[indexTrue].formattedValue,
+                checked: param.currentValue.formattedValue === currLabel?true:false,
+                label: currLabel,
                 param_config: true,
                 param_type: param.dataType,
                 parameter: param.name,
@@ -167,8 +178,7 @@ class BooleanFilter extends React.Component {
 
 
         )
-            // call this function (event handler) to set the right value in the checkbox
-            .then(this.eventChange())
+      
     }
 
     // if there is an event change then update the value of the parameter
