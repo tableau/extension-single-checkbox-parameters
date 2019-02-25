@@ -14,6 +14,7 @@
   "scripts": {
     "start": "rm -rf docs && react-scripts-ts start",
     "build": "rm -rf docs && react-scripts-ts build && mv build docs",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },

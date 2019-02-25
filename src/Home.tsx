@@ -29,7 +29,7 @@ class Home extends React.Component<any, any> {
 							<div className='gh' style={{paddingTop: '10px'}}>
 								Get this extension and more in the <a href='https://extensiongallery.tableau.com/'>Extension Gallery</a>.
 								<br />
-								<a href='https://github.com/tableau/extension-data-driven-parameters'>View on GitHub</a>
+								<a href='https://tableau.github.io/extension-single-checkbox-parameters/'>View on GitHub</a>
 							</div>
 						</div>
 					</div>
