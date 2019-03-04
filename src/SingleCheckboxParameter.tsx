@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { SingleCheckbox } from './SingleCheckbox'
+import { SingleCheckbox } from './SingleCheckbox';
+import { SingleToggle } from './SingleToggle';
 import './style.css';
-// import { settings } from 'cluster';
 
 /* tslint:disable:no-console */
 
@@ -9,8 +9,8 @@ declare global {
     interface Window { tableau: any; }
 }
 
-let dashboard: any;
-let unregisterHandler: any;
+let dashboard: any; // object to hold the Tableau Dashboard
+let unregisterHandler: any;  // object to hold Events
 
 interface State {
     bg: any,
@@ -19,11 +19,39 @@ interface State {
     param_config: boolean;
     param_type: string;
     parameter: string;
+    selector_type: string;
     show_name: boolean;
     txt: any;
     valueFalse: any;
     valueTrue: any;
     which_label: number;
+}
+
+interface Settings {
+    configured: string;
+    which_label: string;
+    parameter: string;
+    bg: string;
+    txt: string;
+    selector_type: string;
+    show_name: string;
+}
+
+// define what we will store in Extension Settings
+let settings: Settings  = {
+    bg: '#F3F3F3',
+    configured: 'false',
+    parameter: '',
+    selector_type: 'checkbox',
+    show_name: 'false',
+    txt: '#000000',
+    which_label: ''
+}
+
+const getAll = () => {
+    settings = {
+        ...window.tableau.extensions.settings.getAll()
+    }
 }
 
 // helper function
@@ -48,12 +76,13 @@ function hexToRgb(hex: string) {
 
 class BooleanFilter extends React.Component {
     public state: State = {
-        bg: '#ffffff',
+        bg: '#F3F3F3',  // default tableau background color
         checked: false,
         label: '',
         param_config: false,
         param_type: '',
         parameter: '',
+        selector_type: 'checkbox',
         show_name: false,
         txt: '#000000',
         valueFalse: '',
@@ -65,6 +94,7 @@ class BooleanFilter extends React.Component {
     public constructor(props: any) {
         super(props)
         this.onChange = this.onChange.bind(this)
+        this.onChangeToggle = this.onChangeToggle.bind(this)
         this.setParamData = this.setParamData.bind(this)
         this.resetParams = this.resetParams.bind(this)
         this.eventChange = this.eventChange.bind(this)
@@ -111,8 +141,7 @@ class BooleanFilter extends React.Component {
     // Once we have mounted, we call to initialize
     public componentWillMount() {
         window.tableau.extensions.initializeAsync({ configure: this.configure }).then(() => {
-            dashboard = window.tableau.extensions.dashboardContent.dashboard;
-            const settings = window.tableau.extensions.settings.getAll();
+            getAll();
             if (settings.configured === 'true') {
                 this.getParamData();
             } else {
@@ -124,11 +153,12 @@ class BooleanFilter extends React.Component {
     // reset all parameters
     public resetParams = () => {
         this.setState({
-            bg: '#ffffff',
+            bg: '#F3F3F3',
             label: '',
             param_config: false,
             param_type: '',
             parameter: '',
+            selector_type: 'checkbox',
             show_name: false,
             txt: '#000000',
             valueFalse: '',
@@ -139,6 +169,7 @@ class BooleanFilter extends React.Component {
 
     // this function handles loading and of stored values and live params 
     public getParamData = (): void => {
+        getAll()
         try {
             unregisterHandler()
             console.log(`Unregistering Event Handler`)
@@ -146,39 +177,39 @@ class BooleanFilter extends React.Component {
         catch (err) {
             console.log(`Ignore error handler as it isn't set yet.`)
         }
-
-        const settings = window.tableau.extensions.settings.getAll();
+        dashboard =  window.tableau.extensions.dashboardContent.dashboard;
         dashboard.findParameterAsync(settings.parameter)
-        .then((param: any) => {
+            .then((param: any) => {
 
-            const indexFalse = settings.which_label==='0'?1:0
-            const indexTrue = settings.which_label==='0'?0:1
-            const currLabel = param.allowableValues.allowableValues[indexTrue].formattedValue
-            this.setState((prevState) => ({
-                bg: (settings.bg ? fakeWhiteOverlay(settings.bg) : '#ffffff'),
-                checked: param.currentValue.formattedValue === currLabel?true:false,
-                label: currLabel,
-                param_config: true,
-                param_type: param.dataType,
-                parameter: param.name,
-                show_name: settings.show_name === 'true' ? true : false,
-                txt: settings.txt,
-                valueFalse: param.allowableValues.allowableValues[indexFalse].formattedValue,
-                valueTrue: param.allowableValues.allowableValues[indexTrue].formattedValue,
-
-
-            }))
-            document.body.style.backgroundColor = settings.bg;
-            document.body.style.color = settings.txt;
+                const indexFalse = settings.which_label === '0' ? 1 : 0
+                const indexTrue = settings.which_label === '0' ? 0 : 1
+                const currLabel = param.allowableValues.allowableValues[indexTrue].formattedValue
+                this.setState((prevState) => ({
+                    bg: (settings.bg ? fakeWhiteOverlay(settings.bg) : '#ffffff'),
+                    checked: param.currentValue.formattedValue === currLabel ? true : false,
+                    label: currLabel,
+                    param_config: true,
+                    param_type: param.dataType,
+                    parameter: param.name,
+                    selector_type: settings.selector_type,
+                    show_name: settings.show_name === 'true' ? true : false,
+                    txt: settings.txt,
+                    valueFalse: param.allowableValues.allowableValues[indexFalse].formattedValue,
+                    valueTrue: param.allowableValues.allowableValues[indexTrue].formattedValue,
 
 
-            unregisterHandler = param.addEventListener(window.tableau.TableauEventType.ParameterChanged, this.eventChange)
+                }))
+                document.body.style.backgroundColor = settings.bg;
+                document.body.style.color = settings.txt;
 
-        }
+
+                unregisterHandler = param.addEventListener(window.tableau.TableauEventType.ParameterChanged, this.eventChange)
+
+            }
 
 
-        )
-      
+            )
+
     }
 
     // if there is an event change then update the value of the parameter
@@ -203,11 +234,17 @@ class BooleanFilter extends React.Component {
         this.setParamData(e.target.checked)
     }
 
+    // this function is when a user changes the toggle/switch
+    public onChangeToggle = (isChecked: boolean, e: any, id: any): void => {
+        this.setState({ checked: isChecked })
+        this.setParamData(isChecked)
+    }
+
     // set the parametr value based on the checkbox value
     public setParamData = (checked: boolean) => {
         dashboard.findParameterAsync(this.state.parameter).then((param: any) => {
             console.log(param)
-            
+
 
             if (checked) {
                 console.log(`trying to set value: ${param.currentValue.formattedValue} for ${param.name} with ${this.state.valueTrue}`)
@@ -219,25 +256,34 @@ class BooleanFilter extends React.Component {
                 param.changeValueAsync(this.state.valueFalse)
             }
 
-            
+
 
 
         })
     }
 
     public render() {
+        const str = 'Please Configure this extension!'
+        let display = (<div>{str}</div>)
 
+        if (!this.state.param_config) {
+            display = (<div>{str}</div>)
+        }
+        else if (this.state.selector_type === 'checkbox') {
+            display = (<SingleCheckbox onChange={this.onChange} onClick={this.onChange} checked={this.state.checked} label={this.state.label} txt={this.state.txt} bg={this.state.bg} parameter={this.state.parameter}
+                show_name={this.state.show_name}
+            />)
+        }
+        else {
+            display = (<SingleToggle onChange={this.onChangeToggle} checked={this.state.checked} label={this.state.label} txt={this.state.txt} bg={this.state.bg} parameter={this.state.parameter}
+                show_name={this.state.show_name}
+            />)
+        }
 
 
         return (
             <div className='container p-0 m-0 d-flex flex-fill w-100 align-self-center' style={{ height: '100%' }} >
-                {!this.state.param_config ? 'Please Configure this extension!' :
-
-                    (<SingleCheckbox onChange={this.onChange} onClick={this.onChange} checked={this.state.checked} label={this.state.label} txt={this.state.txt} bg={this.state.bg} parameter={this.state.parameter}
-                        show_name={this.state.show_name}
-                    />)
-                }
-
+                {display}
 
             </div>
         )

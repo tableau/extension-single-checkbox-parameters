@@ -16,7 +16,7 @@ export const WhichLabel: React.SFC<SelectorProps> = (props) => {
     console.log(`the whichlabel props`)
     const display = props.enabled ? (
 
-            <div>
+            <div className='pt-2'>
                 <div className='h5'>
                 * Choose the label from the values (this will be the "checked" selection)
                 </div>
@@ -45,17 +45,13 @@ export const WhichLabel: React.SFC<SelectorProps> = (props) => {
                         </Col>
                     </Row>
                 </Container>
-                
         
-
-               
-            
 
         </div>) : (<div />)
 
 
     return (
-        <div className='selector'>
+        <div>
             {display}
 
         </div>

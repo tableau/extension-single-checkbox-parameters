@@ -60,12 +60,6 @@ p {
     margin: 0;
 }
 
-.selector {
-    display: flex;
-    min-height: 26px;
-    margin-bottom: 12px;
-}
-
 .selected {
     margin-left: 10px;
     min-height: 26px;
@@ -187,3 +181,9 @@ input[type="color"] {
 select::-ms-expand {
     visibility: hidden;
 }
+
+/* react-switch */
+.react-switch {
+    vertical-align: middle;
+    margin-left: 4px;
+  }

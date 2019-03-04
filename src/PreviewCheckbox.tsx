@@ -1,6 +1,5 @@
 import { Checkbox } from '@tableau/tableau-ui';
 import * as React from 'react';
-// import { Col, Container, Row } from 'reactstrap';
 
 /* tslint:disable:no-console */
 
@@ -18,7 +17,7 @@ interface State {
 
 
 // Shows if setting has not yet been configured
-class PreviewButton extends React.Component<any, State> {
+class PreviewCheckbox extends React.Component<any, State> {
     public state: State = {
         checked: false
     }
@@ -47,7 +46,7 @@ class PreviewButton extends React.Component<any, State> {
         return (
 
 
-            <div style={{ display: enabled ? '' : 'none' }} className='pt-5'>
+            <div style={{ display: enabled ? '' : 'none' }} className='pt-2'>
                 <div className='h5'>
                     * Preview the checkbox
                 </div>
@@ -72,4 +71,4 @@ class PreviewButton extends React.Component<any, State> {
 }
 
 
-export default PreviewButton;
+export default PreviewCheckbox;

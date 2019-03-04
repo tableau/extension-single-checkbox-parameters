@@ -9,12 +9,12 @@
     "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "3.1.0",
+    "react-switch": "^4.1.0",
     "reactstrap": "^7.1.0"
   },
   "scripts": {
     "start": "rm -rf docs && react-scripts-ts start",
     "build": "rm -rf docs && react-scripts-ts build && mv build docs",
-    "deploy": "gh-pages -d build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },

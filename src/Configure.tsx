@@ -1,7 +1,9 @@
 import { Button } from '@tableau/tableau-ui'
 import * as React from 'react';
 import Colors from './Colors'
-import PreviewButton from './PreviewButton'
+import PreviewCheckbox from './PreviewCheckbox'
+import PreviewSwitch from './PreviewToggle'
+import { SelectorType } from './SelectorType';
 import { Setting } from './Setting';
 import { ShowName } from './ShowName'
 import { WhichLabel } from './WhichLabel';
@@ -22,6 +24,7 @@ interface State {
     param_enabled: boolean, // are there parameters that can be utilized by this extension?
     param_list: string[], // list of paramaters to be shown to user for selection
     parameter: string, // name of the chosen parameter
+    selector_type: string, // type of element (checkbox, slider) to show
     show_name: boolean, // do we show the parameter name in the UI?
     txt: string, // string for color of the text
     which_label: number // are we using the first value (0) or second value (1)
@@ -39,12 +42,13 @@ class Configure extends React.Component<any, State> {
 
     public state: State = {
         allowableValues: {},
-        bg: '#ffffff',
+        bg: '#F3F3F3',  // tableau default background color
         configured: false,
         param_config: false,
         param_enabled: false,
         param_list: [],
         parameter: '',
+        selector_type: 'checkbox',
         show_name: false,
         txt: '#000000',
         which_label: 0
@@ -63,6 +67,7 @@ class Configure extends React.Component<any, State> {
         this.submit = this.submit.bind(this)
         this.cancel = this.cancel.bind(this)
         this.extend = this.extend.bind(this)
+        this.selectorTypeChange = this.selectorTypeChange.bind(this)
         this.populateParamList = this.populateParamList.bind(this)
         this.testParamSettings = this.testParamSettings.bind(this)
     }
@@ -91,10 +96,10 @@ class Configure extends React.Component<any, State> {
                 }
             }
             // case insensitive sort
-            dropdownList.sort((a, b) => 
-                (a.localeCompare(b, 'en', {'sensitivity': 'base'}))
+            dropdownList.sort((a, b) =>
+                (a.localeCompare(b, 'en', { 'sensitivity': 'base' }))
             )
-            
+
             if (dropdownList.length > 0) {
                 this.setState({
                     param_enabled: true,
@@ -125,6 +130,12 @@ class Configure extends React.Component<any, State> {
         this.setState({ txt: color.target.value });
     };
 
+    // Handles change in checkbox/toggle changes
+    public selectorTypeChange = (selector: any): void => {
+
+        this.setState({ selector_type: selector.currentTarget.value })
+
+    }
 
     public testParamSettings = () => {
         this.populateParamList()
@@ -137,13 +148,14 @@ class Configure extends React.Component<any, State> {
                     // must make a shallow copy of the array since the object
                     // won't exist if the setState function is queued
                     allowableValues: this.extend(true, param.allowableValues, {}),
-                    bg: settings.bg || '#ffffff',
+                    bg: settings.bg || '#F3F3F3',
                     configured: true,
                     param_config: true,
                     parameter: settings.parameter,
+                    selector_type: settings.selector_type,
                     show_name: settings.show_name === 'true' ? true : false,
                     txt: settings.txt || '#000000',
-                    which_label: settings.which_label==='0'?0:1
+                    which_label: settings.which_label === '0' ? 0 : 1
                 });
                 console.log(`Found existing match: ${param.name} has values ${param.allowableValues.allowableValues[0]} and ${param.allowableValues.allowableValues}`)
             }
@@ -258,7 +270,7 @@ class Configure extends React.Component<any, State> {
 
     // handle changing the radio button from 0 or 1
     public whichChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ which_label: e.target.value==='0'?0:1})
+        this.setState({ which_label: e.target.value === '0' ? 0 : 1 })
     }
 
     // Handles selection in parameter dropdown
@@ -280,11 +292,12 @@ class Configure extends React.Component<any, State> {
         console.log(`submit clicked`)
         this.setState((prevState) => ({ configured: true }))
         window.tableau.extensions.settings.set('configured', this.state.configured.toString());
-        window.tableau.extensions.settings.set('which_label', this.state.which_label===0?'0':'1');
+        window.tableau.extensions.settings.set('which_label', this.state.which_label === 0 ? '0' : '1');
         window.tableau.extensions.settings.set('parameter', this.state.parameter);
         window.tableau.extensions.settings.set('bg', this.state.bg);
         window.tableau.extensions.settings.set('txt', this.state.txt);
         window.tableau.extensions.settings.set('show_name', this.state.show_name.toString());
+        window.tableau.extensions.settings.set('selector_type', this.state.selector_type);
 
         console.log(`getAll:`)
 
@@ -306,9 +319,10 @@ class Configure extends React.Component<any, State> {
         window.tableau.extensions.settings.set('configured', 'false');
         window.tableau.extensions.settings.set('which_label', '0');
         window.tableau.extensions.settings.set('parameter', '');
-        window.tableau.extensions.settings.set('bg', '#ffffff');
+        window.tableau.extensions.settings.set('bg', '#F3F3F3');
         window.tableau.extensions.settings.set('txt', '#000000');
         window.tableau.extensions.settings.set('false', this.state.show_name);
+        window.tableau.extensions.settings.set('selector_type', 'checkbox');
         window.tableau.extensions.settings.saveAsync().then(() => {
             console.log(`closing after submit (passing ${this.state.configured.toString()})`)
             window.tableau.extensions.ui.closeDialog('false');
@@ -358,6 +372,14 @@ class Configure extends React.Component<any, State> {
                     onClick={this.showNameChange}
                     enabled={this.state.param_config} />
 
+                <SelectorType
+                    enabled={this.state.param_config}
+                    checked={this.state.selector_type}
+                    onChange={this.selectorTypeChange}
+                    onClick={this.selectorTypeChange}
+
+                />
+
                 <Colors bg={this.state.bg}
                     txt={this.state.txt}
                     onBGChange={this.bgChange}
@@ -365,15 +387,28 @@ class Configure extends React.Component<any, State> {
                     enabled={this.state.param_config}
                 />
 
-                <PreviewButton
-                    allowableValues={this.state.allowableValues}
-                    enabled={this.state.param_config}
-                    which_label={this.state.which_label}
-                    bg={this.state.bg}
-                    txt={this.state.txt}
-                    parameter={this.state.parameter}
-                    show_name={this.state.show_name}
-                />
+                {this.state.selector_type === 'checkbox' ?
+                    <PreviewCheckbox
+                        allowableValues={this.state.allowableValues}
+                        enabled={this.state.param_config}
+                        which_label={this.state.which_label}
+                        bg={this.state.bg}
+                        txt={this.state.txt}
+                        parameter={this.state.parameter}
+                        show_name={this.state.show_name}
+                    />
+                    :
+                    <PreviewSwitch
+                        allowableValues={this.state.allowableValues}
+                        enabled={this.state.param_config}
+                        which_label={this.state.which_label}
+                        bg={this.state.bg}
+                        txt={this.state.txt}
+                        parameter={this.state.parameter}
+                        show_name={this.state.show_name}
+                    />
+                }
+
                 <div className='d-flex flex-row-reverse'>
                     <div className='p-2'>
                         <Button kind='filled' onClick={this.cancel} style={{ marginRight: '12px' }}>Clear </Button>

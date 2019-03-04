@@ -1,0 +1,46 @@
+import * as React from 'react';
+import Switch from 'react-switch';
+
+/* tslint:disable:no-console */
+
+export interface BCProps {
+    bg: any;
+    checked: boolean;
+    label: string;
+    onChange: (checked: boolean, e: any, id: any) => void;
+    parameter: string;
+    show_name: boolean;
+    txt: any;
+}
+
+// Shows if setting has not yet been configured
+export const SingleToggle: React.SFC<BCProps> = (props) => {
+
+    const height = 18
+    return (
+        <div className='d-flex flex-fill flex-wrap' >
+            <div className='pr-2' style={{ fontWeight: 'bold', color: props.txt }}>
+                {props.show_name ? props.parameter : ''}
+
+            </div>
+            <div style={{ marginBottom: '0' }}>
+                <label>
+                    <Switch
+                        onChange={props.onChange}
+                        checked={props.checked}
+                        height={height}
+                        width={height * 2}
+                        className='react-switch'
+                    />
+                    <span style={{ color: props.txt, marginLeft: '4px'  }}>
+                        {props.label}
+                    </span>
+
+                </label>
+            </div>
+
+        </div>
+    );
+};
+
+SingleToggle.displayName = 'SingleToggle';

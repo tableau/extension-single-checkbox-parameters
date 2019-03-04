@@ -14,7 +14,7 @@ class Colors extends React.Component<any> {
 
         return (
           
-<div style={{display: this.props.enabled?'':'none'}} className='pt-5'>
+<div style={{display: this.props.enabled?'':'none'}} className='pt-2'>
 <div className='h5'>
                 * Choose colors
                 </div>
