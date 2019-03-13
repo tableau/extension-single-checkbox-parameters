@@ -14,18 +14,16 @@ export interface SelectorProps {
 export const ShowName: React.SFC<SelectorProps> = (props) => {
 
     return (
-        <div style={{display: props.enabled?'':'none'}}>
+        <div style={{ display: props.enabled ? '' : 'none' }}>
             <div className='h5'>
                 * Show the parameter name?
                 </div>
-       <Checkbox
-                        checked={props.show_name}
-                        onChange={props.onChange}
-                        style={{paddingRight: '5px', marginLeft: '20px'}}
-                     />
-                        Show Parameter Name
-     
-
+            <Checkbox
+                checked={props.show_name}
+                onChange={props.onChange}
+                style={{ paddingRight: '5px', marginLeft: '20px' }}
+            />
+            Show Parameter Name
         </div>
     );
 };

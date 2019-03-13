@@ -22,6 +22,7 @@ interface State {
     selector_type: string;
     show_name: boolean;
     txt: any;
+    uiDisabled: boolean;
     valueFalse: any;
     valueTrue: any;
     which_label: number;
@@ -38,7 +39,7 @@ interface Settings {
 }
 
 // define what we will store in Extension Settings
-let settings: Settings  = {
+let settings: Settings = {
     bg: '#F3F3F3',
     configured: 'false',
     parameter: '',
@@ -85,6 +86,7 @@ class BooleanFilter extends React.Component {
         selector_type: 'checkbox',
         show_name: false,
         txt: '#000000',
+        uiDisabled: false,
         valueFalse: '',
         valueTrue: '',
         which_label: 0
@@ -161,6 +163,7 @@ class BooleanFilter extends React.Component {
             selector_type: 'checkbox',
             show_name: false,
             txt: '#000000',
+            uiDisabled: false,
             valueFalse: '',
             valueTrue: '',
             which_label: 0
@@ -177,10 +180,9 @@ class BooleanFilter extends React.Component {
         catch (err) {
             console.log(`Ignore error handler as it isn't set yet.`)
         }
-        dashboard =  window.tableau.extensions.dashboardContent.dashboard;
+        dashboard = window.tableau.extensions.dashboardContent.dashboard;
         dashboard.findParameterAsync(settings.parameter)
             .then((param: any) => {
-
                 const indexFalse = settings.which_label === '0' ? 1 : 0
                 const indexTrue = settings.which_label === '0' ? 0 : 1
                 const currLabel = param.allowableValues.allowableValues[indexTrue].formattedValue
@@ -196,30 +198,20 @@ class BooleanFilter extends React.Component {
                     txt: settings.txt,
                     valueFalse: param.allowableValues.allowableValues[indexFalse].formattedValue,
                     valueTrue: param.allowableValues.allowableValues[indexTrue].formattedValue,
-
-
                 }))
                 document.body.style.backgroundColor = settings.bg;
                 document.body.style.color = settings.txt;
-
-
                 unregisterHandler = param.addEventListener(window.tableau.TableauEventType.ParameterChanged, this.eventChange)
-
             }
-
-
             )
-
     }
 
     // if there is an event change then update the value of the parameter
     public eventChange = (): void => {
-
         dashboard.findParameterAsync(this.state.parameter).then((param: any) => {
             // if the current (real) parameter formatted value = the value that is displayed
             if (param.currentValue.formattedValue === this.state.valueTrue) {
                 this.setState({ checked: true })
-
             }
             else {
                 this.setState({ checked: false })
@@ -243,22 +235,26 @@ class BooleanFilter extends React.Component {
     // set the parametr value based on the checkbox value
     public setParamData = (checked: boolean) => {
         dashboard.findParameterAsync(this.state.parameter).then((param: any) => {
-            console.log(param)
-
-
+            // Disable the checkbox first, re-enable it when returning from the promise
+            this.setState((prevState)=>({
+                uiDisabled: true
+            }))
             if (checked) {
-                console.log(`trying to set value: ${param.currentValue.formattedValue} for ${param.name} with ${this.state.valueTrue}`)
                 param.changeValueAsync(this.state.valueTrue)
-
+                .then(()=>{
+                    this.setState((prevState)=>({
+                        uiDisabled: false
+                    }))
+                })
             }
             else {
-                console.log(`trying to set value: ${param.currentValue.formattedValue} for ${param.name} with ${this.state.valueFalse}`)
                 param.changeValueAsync(this.state.valueFalse)
+                .then(()=>{
+                    this.setState((prevState)=>({
+                        uiDisabled: false
+                    }))
+                })
             }
-
-
-
-
         })
     }
 
@@ -270,21 +266,34 @@ class BooleanFilter extends React.Component {
             display = (<div>{str}</div>)
         }
         else if (this.state.selector_type === 'checkbox') {
-            display = (<SingleCheckbox onChange={this.onChange} onClick={this.onChange} checked={this.state.checked} label={this.state.label} txt={this.state.txt} bg={this.state.bg} parameter={this.state.parameter}
+            display = (<SingleCheckbox 
+                onChange={this.onChange} 
+                onClick={this.onChange} 
+                checked={this.state.checked} 
+                uiDisabled={this.state.uiDisabled}
+                label={this.state.label} 
+                txt={this.state.txt} 
+                bg={this.state.bg} 
+                parameter={this.state.parameter}
                 show_name={this.state.show_name}
             />)
         }
         else {
-            display = (<SingleToggle onChange={this.onChangeToggle} checked={this.state.checked} label={this.state.label} txt={this.state.txt} bg={this.state.bg} parameter={this.state.parameter}
+            display = (<SingleToggle 
+                onChange={this.onChangeToggle} 
+                checked={this.state.checked} 
+                uiDisabled={this.state.uiDisabled}
+                label={this.state.label} 
+                txt={this.state.txt} 
+                bg={this.state.bg} 
+                parameter={this.state.parameter}
                 show_name={this.state.show_name}
             />)
         }
 
-
         return (
             <div className='container p-0 m-0 d-flex flex-fill w-100 align-self-center' style={{ height: '100%' }} >
                 {display}
-
             </div>
         )
     }

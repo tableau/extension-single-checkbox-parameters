@@ -28,7 +28,6 @@ interface State {
     show_name: boolean, // do we show the parameter name in the UI?
     txt: string, // string for color of the text
     which_label: number // are we using the first value (0) or second value (1)
-
 }
 
 let dashboard: any;
@@ -38,8 +37,6 @@ const Loading: string = 'Loading...';
 const NoParametersFound: string = 'No appropriate input parameters found!';
 
 class Configure extends React.Component<any, State> {
-
-
     public state: State = {
         allowableValues: {},
         bg: '#F3F3F3',  // tableau default background color
@@ -52,9 +49,6 @@ class Configure extends React.Component<any, State> {
         show_name: false,
         txt: '#000000',
         which_label: 0
-
-
-
     }
 
     public constructor(props: any) {
@@ -99,7 +93,6 @@ class Configure extends React.Component<any, State> {
             dropdownList.sort((a, b) =>
                 (a.localeCompare(b, 'en', { 'sensitivity': 'base' }))
             )
-
             if (dropdownList.length > 0) {
                 this.setState({
                     param_enabled: true,
@@ -114,10 +107,6 @@ class Configure extends React.Component<any, State> {
                 });
             }
         });
-
-
-        // don't forget to setup LISTENERS
-
     }
 
     // Handles change in background color input
@@ -132,9 +121,7 @@ class Configure extends React.Component<any, State> {
 
     // Handles change in checkbox/toggle changes
     public selectorTypeChange = (selector: any): void => {
-
         this.setState({ selector_type: selector.currentTarget.value })
-
     }
 
     public testParamSettings = () => {
@@ -160,7 +147,6 @@ class Configure extends React.Component<any, State> {
                 console.log(`Found existing match: ${param.name} has values ${param.allowableValues.allowableValues[0]} and ${param.allowableValues.allowableValues}`)
             }
         }
-
         )
     }
 
@@ -212,8 +198,6 @@ class Configure extends React.Component<any, State> {
             dashboard.findParameterAsync(this.state.parameter).then((param: any) => {
                 console.log(`${param.name} has values ${param.allowableValues.allowableValues[0]} and ${param.allowableValues.allowableValues}`)
 
-
-
                 // must make a shallow copy of the array since the object
                 // won't exist if the setState function is queued
                 this.setState({
@@ -221,12 +205,8 @@ class Configure extends React.Component<any, State> {
                     configured: true,
                     param_config: true
                 })
-
             }
-
             )
-
-
         }
     }
 
@@ -247,7 +227,6 @@ class Configure extends React.Component<any, State> {
     public componentWillMount() {
         window.tableau.extensions.initializeDialogAsync().then(() => {
             dashboard = window.tableau.extensions.dashboardContent.dashboard;
-
             const settings = window.tableau.extensions.settings.getAll();
             console.log(`in compWillMount`)
             console.log(settings)
@@ -255,17 +234,11 @@ class Configure extends React.Component<any, State> {
                 this.setState({
                     configured: true
                 });
-
                 this.testParamSettings();
             } else {
-
                 this.populateParamList();
             }
-
-            // this.setState({ready: true})       
         })
-
-
     }
 
     // handle changing the radio button from 0 or 1
@@ -289,7 +262,6 @@ class Configure extends React.Component<any, State> {
 
     // Saves settings and closes configure dialog
     public submit = (): void => {
-        console.log(`submit clicked`)
         this.setState((prevState) => ({ configured: true }))
         window.tableau.extensions.settings.set('configured', this.state.configured.toString());
         window.tableau.extensions.settings.set('which_label', this.state.which_label === 0 ? '0' : '1');
@@ -298,14 +270,11 @@ class Configure extends React.Component<any, State> {
         window.tableau.extensions.settings.set('txt', this.state.txt);
         window.tableau.extensions.settings.set('show_name', this.state.show_name.toString());
         window.tableau.extensions.settings.set('selector_type', this.state.selector_type);
-
-        console.log(`getAll:`)
-
-        console.log(window.tableau.extensions.settings.getAll())
-        console.log(`this.state.configure: ${this.state.configured}`)
         window.tableau.extensions.settings.saveAsync().then(() => {
-            console.log(`closing after submit (passing ${this.state.configured.toString()})`)
             window.tableau.extensions.ui.closeDialog(this.state.configured.toString());
+        })
+        .catch((err: any)=>{
+            console.log(`an error occurred closing the dialogue box: ${err} ${err.stack}`)
         });
     }
 
@@ -314,7 +283,6 @@ class Configure extends React.Component<any, State> {
 
     // Saves settings and closes configure dialog
     public cancel = (): void => {
-        console.log(`cancel clicked`)
         this.clearParam();
         window.tableau.extensions.settings.set('configured', 'false');
         window.tableau.extensions.settings.set('which_label', '0');
@@ -324,26 +292,19 @@ class Configure extends React.Component<any, State> {
         window.tableau.extensions.settings.set('false', this.state.show_name);
         window.tableau.extensions.settings.set('selector_type', 'checkbox');
         window.tableau.extensions.settings.saveAsync().then(() => {
-            console.log(`closing after submit (passing ${this.state.configured.toString()})`)
             window.tableau.extensions.ui.closeDialog('false');
-        });
+        }) .catch((err: any)=>{
+            console.log(`an error occurred closing the dialogue box: ${err} ${err.stack}`)
+        });;
     }
 
     public render() {
-
-
-
-
-
         return (
             <div className='p-4'>
                 <div className='h1 pb-5'>
                     Singe Checkbox Parameters
-
                 </div>
-
                 <div className='d-inline'>
-
                     <div className='h4'>
                         Select the parameter
                     </div>
@@ -356,8 +317,6 @@ class Configure extends React.Component<any, State> {
                         list={this.state.param_list}
                         onChange={this.paramChange} />
                 </div>
-
-
 
                 <WhichLabel
                     allowableValues={this.state.allowableValues}
@@ -377,7 +336,6 @@ class Configure extends React.Component<any, State> {
                     checked={this.state.selector_type}
                     onChange={this.selectorTypeChange}
                     onClick={this.selectorTypeChange}
-
                 />
 
                 <Colors bg={this.state.bg}
@@ -413,10 +371,8 @@ class Configure extends React.Component<any, State> {
                     <div className='p-2'>
                         <Button kind='filled' onClick={this.cancel} style={{ marginRight: '12px' }}>Clear </Button>
                         <Button disabled={!this.state.param_config} kind={this.state.param_config ? 'filledGreen' : 'outline'} onClick={this.submit}>Okay </Button>
-
                     </div>
                 </div>
-
             </div>
         )
     }

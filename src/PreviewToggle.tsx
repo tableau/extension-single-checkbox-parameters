@@ -32,34 +32,22 @@ class PreviewToggle extends React.Component<any, State> {
 
     public render() {
         const { allowableValues, bg, which_label, enabled, txt, show_name, parameter } = this.props;
-
         let label = ''
         if (enabled) {
             label = allowableValues.allowableValues[which_label].formattedValue
         }
-
-
-
-
         const height=18
         return (
-            
-
             <div style={{ display: enabled ? '' : 'none' }} className='pt-2'>
                 <div className='h5'>
                     * Preview the toggle switch
                 </div>
-
-
                 <div className='col-sm p-3 d-flex flex-wrap' style={{ backgroundColor: bg, borderStyle: 'solid', borderColor: 'lightgray' }}>
                     <div className='pr-2' style={{ fontWeight: 'bold', color: txt }}>
                         {show_name ? parameter : ''}
-
                     </div>
                     <div>
-
                         <label>
-
                             <Switch
                                 checked={this.state.checked}
                                 onChange={this.onChange} 
@@ -68,17 +56,12 @@ class PreviewToggle extends React.Component<any, State> {
                                 className='react-switch'
                                 />
                             <span style={{ color: txt, marginLeft: '4px' }}>{label}</span>
-
                         </label>
-
                     </div>
                 </div>
-
             </div>
-
         );
     };
 }
-
 
 export default PreviewToggle;

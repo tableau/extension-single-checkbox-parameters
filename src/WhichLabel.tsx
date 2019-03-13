@@ -16,46 +16,40 @@ export const WhichLabel: React.SFC<SelectorProps> = (props) => {
     console.log(`the whichlabel props`)
     const display = props.enabled ? (
 
-            <div className='pt-2'>
-                <div className='h5'>
+        <div className='pt-2'>
+            <div className='h5'>
                 * Choose the label from the values (this will be the "checked" selection)
                 </div>
-                <Container>
-                    <Row>
-                        <Col className='col-sm'>
+            <Container>
+                <Row>
+                    <Col className='col-sm'>
                         <Radio
-                    checked={props.checked===0}
-                    onChange={props.onChange}
-                    name='which_radio'
-                    value='0' >
-                    {props.allowableValues.allowableValues[0].formattedValue} 
-                    <br />
+                            checked={props.checked === 0}
+                            onChange={props.onChange}
+                            name='which_radio'
+                            value='0' >
+                            {props.allowableValues.allowableValues[0].formattedValue}
+                            <br />
 
-                </Radio>
-                        </Col>
-                        <Col className='col-sm'>
+                        </Radio>
+                    </Col>
+                    <Col className='col-sm'>
                         <Radio
-                    checked={props.checked===1}
-                    onChange={props.onChange}
-                    name='which_radio'
-                    value='1'   >
-                    {props.allowableValues.allowableValues[1].formattedValue} 
+                            checked={props.checked === 1}
+                            onChange={props.onChange}
+                            name='which_radio'
+                            value='1'   >
+                            {props.allowableValues.allowableValues[1].formattedValue}
 
-                </Radio>
-                        </Col>
-                    </Row>
-                </Container>
-        
-
+                        </Radio>
+                    </Col>
+                </Row>
+            </Container>
         </div>) : (<div />)
-
 
     return (
         <div>
             {display}
-
         </div>
     );
 };
-
-

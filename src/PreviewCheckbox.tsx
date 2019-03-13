@@ -14,8 +14,6 @@ interface State {
     checked: boolean
 }
 
-
-
 // Shows if setting has not yet been configured
 class PreviewCheckbox extends React.Component<any, State> {
     public state: State = {
@@ -32,40 +30,26 @@ class PreviewCheckbox extends React.Component<any, State> {
     }
 
     public render() {
-        const { allowableValues, bg, which_label, enabled, txt,  show_name, parameter } = this.props;
-
+        const { allowableValues, bg, which_label, enabled, txt, show_name, parameter } = this.props;
         let label = ''
         if (enabled) {
             label = allowableValues.allowableValues[which_label].formattedValue
         }
 
-
-
-
-
         return (
-
-
             <div style={{ display: enabled ? '' : 'none' }} className='pt-2'>
                 <div className='h5'>
                     * Preview the checkbox
                 </div>
-
-              
                 <div className='col-sm p-3 d-flex flex-wrap' style={{ backgroundColor: bg, borderStyle: 'solid', borderColor: 'lightgray' }}>
-                 <div className='pr-2' style={{marginBottom: '.5rem', fontWeight: 'bold', color: txt}}>
-                {show_name?parameter:''}
-                    
-                     </div>
-                     <div>
-
-                     <Checkbox checked={this.state.checked} onChange={this.onChange} ><span style={{ color: txt }}>{label}</span></Checkbox>
-
-                     </div>
+                    <div className='pr-2' style={{ marginBottom: '.5rem', fontWeight: 'bold', color: txt }}>
+                        {show_name ? parameter : ''}
+                    </div>
+                    <div>
+                        <Checkbox checked={this.state.checked} onChange={this.onChange} ><span style={{ color: txt }}>{label}</span></Checkbox>
+                    </div>
                 </div>
-
             </div>
-
         );
     };
 }

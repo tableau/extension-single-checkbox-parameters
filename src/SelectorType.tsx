@@ -29,7 +29,6 @@ export const SelectorType: React.SFC<SelectorProps> = (props) => {
                             value='checkbox' >
                             Checkbox
                     <br />
-
                         </Radio>
                     </Col>
                     <Col className='col-sm'>
@@ -39,7 +38,6 @@ export const SelectorType: React.SFC<SelectorProps> = (props) => {
                             name='which_selector'
                             value='toggle'   >
                             Toggle
-        
                 </Radio>
                     </Col>
                 </Row>
@@ -47,5 +45,3 @@ export const SelectorType: React.SFC<SelectorProps> = (props) => {
         </div>
     );
 };
-
-

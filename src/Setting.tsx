@@ -21,14 +21,14 @@ export const Setting: React.SFC<SettingProps> = (props) => {
     let warning: any = (<div />)
     if (env !== undefined) {
         if (env.operatingSystem === 'mac' && env.tableauVersion.includes('2018') && !props.config) {
-            warning = (<div style={{ color: 'red', fontStyle: 'italic', fontSize:'8pt' }}>Known issue: Please select dropdown values with your keyboard.</div>)
+            warning = (<div style={{ color: 'red', fontStyle: 'italic', fontSize: '8pt' }}>Known issue: Please select dropdown values with your keyboard.</div>)
         }
     }
 
     return (
         <React.Fragment>
             <div>
-            {renderSelectElement(props)}
+                {renderSelectElement(props)}
             </div>
 
             <div>
@@ -41,9 +41,8 @@ export const Setting: React.SFC<SettingProps> = (props) => {
 Setting.displayName = 'Setting';
 
 function renderSelectElement(props: SettingProps): JSX.Element {
-    const { config, enabled, list,  onChange, onClear, onClick, selected } = props;
-
+    const { config, enabled, list, onChange, onClear, onClick, selected } = props;
 
     return config ? <Selected onClear={onClear} selected={selected} /> :
-                    <Selector enabled={enabled} list={list} onChange={onChange} onClick={onClick} selected={selected} />;
+        <Selector enabled={enabled} list={list} onChange={onChange} onClick={onClick} selected={selected} />;
 }

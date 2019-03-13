@@ -29,23 +29,15 @@ export const Selector: React.SFC<SelectorProps> = (props) => {
     };
 
     return (
-
         <div className='d-flex flex-row'>
             <div className='p-2 w-100'>
                 <DropdownSelect {...dropdownSelectProps} className='w-100'>
                     {props.list.map(option => <option key={option}>{option}</option>)}
-
                 </DropdownSelect>
-
-
             </div>
             <div className='p-2 flex-shrink-1'>
-
                 <Button {...buttonProps}>Set</Button>
             </div>
         </div>
-
-
-
     );
 };
