@@ -11,6 +11,9 @@ declare global {
 
 let dashboard: any; // object to hold the Tableau Dashboard
 let unregisterHandler: any;  // object to hold Events
+const configureStr = 'Please Configure this extension!' // Message to display in the main window for error/not configured
+let message = configureStr; // message to be displayed to user
+const genericError = `This Extension could not retrieve the parameter.  Please add a parameter or select a new one.` // if param gets deleted or other error
 
 interface State {
     bg: any,
@@ -119,8 +122,6 @@ class BooleanFilter extends React.Component {
             console.log(`returning from Configure! ${closePayload}`)
             if (closePayload === 'true') {
                 this.getParamData();
-
-
             }
             else {
                 this.resetParams();
@@ -136,6 +137,7 @@ class BooleanFilter extends React.Component {
                     break;
                 default:
                     console.error(error.message);
+                    this.resetParams(genericError)
             }
         });
     }
@@ -149,12 +151,17 @@ class BooleanFilter extends React.Component {
             } else {
                 this.configure();
             }
+        })
+        .catch((err: any)=>{
+            console.log(`Something went wrong.  Here is the error: ${err}.<p> ${err.stack}`)
+            this.resetParams()
         });
     }
 
     // reset all parameters
-    public resetParams = () => {
-        this.setState({
+    public resetParams = (msg = configureStr) => {
+        message = msg;
+        this.setState(((prevState) => ({
             bg: '#F3F3F3',
             label: '',
             param_config: false,
@@ -167,7 +174,7 @@ class BooleanFilter extends React.Component {
             valueFalse: '',
             valueTrue: '',
             which_label: 0
-        })
+        })))
     }
 
     // this function handles loading and of stored values and live params 
@@ -204,6 +211,10 @@ class BooleanFilter extends React.Component {
                 unregisterHandler = param.addEventListener(window.tableau.TableauEventType.ParameterChanged, this.eventChange)
             }
             )
+            .catch((err: any)=>{
+                console.log(`Something went wrong.  Here is the error: ${err}.<p> ${err.stack}`)
+                this.resetParams(genericError)
+            });
     }
 
     // if there is an event change then update the value of the parameter
@@ -217,6 +228,10 @@ class BooleanFilter extends React.Component {
                 this.setState({ checked: false })
             }
         })
+        .catch((err: any)=>{
+            console.log(`Something went wrong.  Here is the error: ${err}.<p> ${err.stack}`)
+            this.resetParams(genericError)
+        });
     }
 
     // this function is for a user clicking the checkbox in the checkbox parameter
@@ -256,14 +271,17 @@ class BooleanFilter extends React.Component {
                 })
             }
         })
+        .catch((err: any)=>{
+            console.log(`Something went wrong.  Here is the error: ${err}.<p> ${err.stack}`)
+            this.resetParams(genericError)
+        });
     }
 
     public render() {
-        const str = 'Please Configure this extension!'
-        let display = (<div>{str}</div>)
+        let display = (<div>{message}</div>)
 
         if (!this.state.param_config) {
-            display = (<div>{str}</div>)
+            display = (<div>{message}</div>)
         }
         else if (this.state.selector_type === 'checkbox') {
             display = (<SingleCheckbox 

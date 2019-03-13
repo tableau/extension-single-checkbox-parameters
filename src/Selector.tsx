@@ -7,7 +7,7 @@ export interface SelectorProps {
     list: string[];
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
     onClick: () => void;
-    selected: string;
+    selected: string;   
 }
 
 // Shows if setting has not yet been configured

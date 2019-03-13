@@ -83,8 +83,6 @@ class Configure extends React.Component<any, State> {
         dashboard.getParametersAsync().then((params: any) => {
             const dropdownList: string[] = [];
             for (const p of params) {
-                console.log(`${p.name} is of type ${p.allowableValues.type}`)
-                console.log(p)
                 if (p.allowableValues.type === 'list' && p.allowableValues.allowableValues.length >= 2) {
                     dropdownList.push(p.name);
                 }
@@ -147,7 +145,11 @@ class Configure extends React.Component<any, State> {
                 console.log(`Found existing match: ${param.name} has values ${param.allowableValues.allowableValues[0]} and ${param.allowableValues.allowableValues}`)
             }
         }
-        )
+        )           
+        .catch((err: any)=>{
+            console.log(`Something went wrong.  Likely no parameters to retrieve.  Here is the error: ${err}.<p> ${err.stack}`)
+            this.clearParam()
+        });
     }
 
 
@@ -315,7 +317,8 @@ class Configure extends React.Component<any, State> {
                         enabled={this.state.param_enabled && !this.state.param_config}
                         selected={this.state.parameter}
                         list={this.state.param_list}
-                        onChange={this.paramChange} />
+                        onChange={this.paramChange} 
+                        />
                 </div>
 
                 <WhichLabel
