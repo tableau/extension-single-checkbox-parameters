@@ -38,8 +38,8 @@ class PreviewCheckbox extends React.Component<any, State> {
 
         return (
             <div style={{ display: enabled ? '' : 'none' }} className='pt-2'>
-                <div className='h5'>
-                    * Preview the checkbox
+                <div style={{paddingLeft: '10px' }}>
+                    Preview the checkbox
                 </div>
                 <div className='col-sm p-3 d-flex flex-wrap' style={{ backgroundColor: bg, borderStyle: 'solid', borderColor: 'lightgray' }}>
                     <div className='pr-2' style={{ marginBottom: '.5rem', fontWeight: 'bold', color: txt }}>

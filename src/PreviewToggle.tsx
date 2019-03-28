@@ -39,8 +39,8 @@ class PreviewToggle extends React.Component<any, State> {
         const height=18
         return (
             <div style={{ display: enabled ? '' : 'none' }} className='pt-2'>
-                <div className='h5'>
-                    * Preview the toggle switch
+                <div style={{paddingLeft: '10px' }}>
+                    Preview the toggle switch
                 </div>
                 <div className='col-sm p-3 d-flex flex-wrap' style={{ backgroundColor: bg, borderStyle: 'solid', borderColor: 'lightgray' }}>
                     <div className='pr-2' style={{ fontWeight: 'bold', color: txt }}>

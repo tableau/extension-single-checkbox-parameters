@@ -15,15 +15,15 @@ export const ShowName: React.SFC<SelectorProps> = (props) => {
 
     return (
         <div style={{ display: props.enabled ? '' : 'none' }}>
-            <div className='h5'>
-                * Show the parameter name?
+            <div style={{paddingLeft: '10px' }}>
+                Parameter Name
                 </div>
             <Checkbox
                 checked={props.show_name}
                 onChange={props.onChange}
                 style={{ paddingRight: '5px', marginLeft: '20px' }}
             />
-            Show Parameter Name
+            Show
         </div>
     );
 };
