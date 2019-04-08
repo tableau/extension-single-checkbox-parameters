@@ -1,6 +1,4 @@
 @font-face {
-    font-family: 'Benton Sans Light';
-    src: url(./fonts/BentonSans-Light.woff);
     font-style: normal;
     font-weight: 100;
 }
@@ -43,7 +41,7 @@ body {
     justify-content: flex-start;
     flex-wrap: wrap;
     font-size: 20px;
-    font-family: 'Benton Sans Light', 'Segoe UI Light', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .right {
@@ -57,7 +55,7 @@ body {
 
 .iheader {
     font-size: 64px;
-    font-family: 'Bookman Old Style', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     margin: 10px 0px;
     line-height: 54px;
 }
