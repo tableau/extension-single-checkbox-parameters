@@ -332,7 +332,7 @@ class Configure extends React.Component<any, State> {
         return (
             <div className='p-4'>
                 <div className='h1 pb-5'>
-                    Singe Checkbox Parameters
+                    Single Checkbox Parameters
                 </div>
                 <div className='d-inline'>
                     <div className='h4'>
