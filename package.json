@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@tableau/tableau-ui": "2.1.0",
-    "@types/react-router-dom": "^4.3.1",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-router-dom": "^4.3.1",
+    "@tableau/tableau-ui": "^2.2.0",
+    "@types/react-router-dom": "^4.3.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.1",
     "react-scripts-ts": "3.1.0",
-    "react-switch": "^4.1.0",
-    "reactstrap": "^7.1.0"
+    "react-switch": "^5.0.0",
+    "reactstrap": "^8.0.0"
   },
   "scripts": {
     "start": "rm -rf docs && react-scripts-ts start",
@@ -19,12 +19,12 @@
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.13",
-    "@types/node": "^10.12.18",
-    "@types/react": "^16.7.20",
-    "@types/react-dom": "^16.0.11",
-    "@types/reactstrap": "^7.1.0",
-    "typescript": "^3.2.4"
+    "@types/jest": "^24.0.13",
+    "@types/node": "^10.14.8",
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "@types/reactstrap": "^8.0.1",
+    "typescript": "^3.5.1"
   },
   "homepage": "https://tableau.github.io/extension-single-checkbox-parameters"
 }
