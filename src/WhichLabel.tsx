@@ -25,27 +25,18 @@ export const WhichLabel: React.SFC<SelectorProps> = (props) => {
                 </div>
             <Container>
                 <Row>
-                    <Col className='col-sm'>
-                        <Radio
-                            checked={props.checked === 0}
-                            onChange={props.onChange}
-                            name='which_radio'
-                            value='0' >
-                            {props.allowableValues.allowableValues[0].formattedValue}
-                            <br />
-
-                        </Radio>
-                    </Col>
+                    //for showing more than two parameters
+                   for(var i=0;i<props.allowableValues.allowableValues.length;i++){
                     <Col className='col-sm'>
                         <Radio
                             checked={props.checked === 1}
                             onChange={props.onChange}
                             name='which_radio'
                             value='1'   >
-                            {props.allowableValues.allowableValues[1].formattedValue}
-
+                            {props.allowableValues.allowableValues[i].formattedValue}
                         </Radio>
                     </Col>
+                                    }
                 </Row>
             </Container>
         </div>) : (<div />)
