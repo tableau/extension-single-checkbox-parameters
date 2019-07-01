@@ -32,7 +32,7 @@ export const WhichLabel: React.SFC<SelectorProps> = (props) => {
                             checked={props.checked === 1}
                             onChange={props.onChange}
                             name='which_radio'
-                            value='1'   >
+                            value='(i==0)?1:0'   >
                             {props.allowableValues.allowableValues[i].formattedValue}
                         </Radio>
                     </Col>
