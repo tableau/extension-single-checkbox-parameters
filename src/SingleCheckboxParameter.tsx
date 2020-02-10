@@ -116,7 +116,7 @@ class BooleanFilter extends React.Component {
             console.log('Ignore error handler as it is not set yet.');
         }
 
-        const popupUrl = (window.location.origin.includes('localhost')) ? `${window.location.origin}/#/config` : `${window.location.origin}/extension-single-checkbox-parameters/#/config`;
+        const popupUrl = (window.location.origin.indexOf('localhost') !== -1) ? `${window.location.origin}/#/config` : `${window.location.origin}/extension-single-checkbox-parameters/#/config`;
         const payload = '';
         window.tableau.extensions.ui.displayDialogAsync(popupUrl, payload, { height: 525, width: 450 }).then((closePayload: string) => {
             console.log(`returning from Configure! ${closePayload}`)

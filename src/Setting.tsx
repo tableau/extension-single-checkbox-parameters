@@ -20,7 +20,7 @@ export const Setting: React.SFC<SettingProps> = (props) => {
     const env = window.tableau.extensions.environment;
     let warning: any = (<div />)
     if (env !== undefined) {
-        if (env.operatingSystem === 'mac' && env.tableauVersion.includes('2018') && !props.config) {
+        if (env.operatingSystem === 'mac' && env.tableauVersion.indexOf('2018') !== -1 && !props.config) {
             warning = (<div style={{ color: 'red', fontStyle: 'italic', fontSize: '8pt' }}>Known issue: Please select dropdown values with your keyboard.</div>)
         }
     }
