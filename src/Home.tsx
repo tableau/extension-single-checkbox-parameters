@@ -27,7 +27,7 @@ class Home extends React.Component<any, any> {
 							</ol>
 							<p><b>Note:</b> You can add as many instances of this extension as you like!</p>
 							<div className='gh' style={{paddingTop: '10px'}}>
-								Get this extension and more in the <a href='https://extensiongallery.tableau.com/'>Extension Gallery</a>.
+								Get this extension and more in the <a href='https://exchange.tableau.com/'>Tableau Exchange</a>.
 								<br />
 								<a href='https://tableau.github.io/extension-single-checkbox-parameters/'>View on GitHub</a>
 							</div>
